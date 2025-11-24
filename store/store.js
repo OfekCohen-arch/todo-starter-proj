@@ -1,8 +1,9 @@
 const { createStore } = Redux;
+import { todoService } from "../services/todo.service.js";
 import { userService } from "../services/user.service.js";
 const initialState = {
   todos: [],
-  filterBy: {},
+  filterBy: todoService.getDefaultFilter(),
   isLoading: false,
   loggedinUser: userService.getLoggedinUser(),
 };
@@ -62,6 +63,7 @@ function appReducer(state = initialState, cmd = {}) {
     default:
       return state;
   }
+  
 }
 
 export const store = createStore(appReducer);
