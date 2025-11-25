@@ -21,11 +21,18 @@ export function AppHeader() {
                 showErrorMsg('OOPs try again')
             })
     }
-
+   function getDoneTodosPrecents(){
+    const todos = useSelector((state)=>state.todos)
+    const doneTodosNumber = todos.filter(todo=>todo.isDone).length
+    const doneTodosPrecent = doneTodosNumber/todos.length * 100
+    return JSON.stringify(doneTodosPrecent).substring(0,4)
+   }
     return (
         <header className="app-header full main-layout">
             <section className="header-container">
                 <h1>React Todo App</h1>
+                <span>Done todos: {getDoneTodosPrecents()}%</span>
+                <progress  value={getDoneTodosPrecents()} max="100"></progress>
                 {loggedinUser ? (
                     < section >
 
@@ -43,6 +50,7 @@ export function AppHeader() {
                     <NavLink to="/todo" >Todos</NavLink>
                     <NavLink to="/dashboard" >Dashboard</NavLink>
                 </nav>
+                
             </section>
             <UserMsg />
         </header>
