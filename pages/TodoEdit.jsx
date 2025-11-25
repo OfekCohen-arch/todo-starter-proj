@@ -1,6 +1,7 @@
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
-import { getTodo } from "../store/todo.actions.js"
+import { getTodo,saveTodo } from "../store/todo.actions.js"
+import { GET_TODO } from "../store/store.js"
 
 const { useState, useEffect } = React
 const {useSelector,useDispatch} = ReactRedux
@@ -12,6 +13,7 @@ export function TodoEdit() {
     const isLoading = useSelector((state)=>state.isLoading)
     const navigate = useNavigate()
     const params = useParams()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (params.todoId) loadTodo()
@@ -39,25 +41,25 @@ export function TodoEdit() {
             default:
                 break
         }
-
-        setTodoToEdit(prevTodoToEdit => ({ ...prevTodoToEdit, [field]: value }))
+        dispatch({type:GET_TODO,todoToGet:{ ...todoToEdit, [field]: value }})
+     
     }
 
     function onSaveTodo(ev) {
         ev.preventDefault()
-        todoService.save(todoToEdit)
-            .then((savedTodo) => {
+        saveTodo(todoToEdit)
+        .then((savedTodo) => {
                 navigate('/todo')
                 showSuccessMsg(`Todo Saved (id: ${savedTodo._id})`)
             })
             .catch(err => {
                 showErrorMsg('Cannot save todo')
                 console.log('err:', err)
-            })
+            })      
     }
 
     const { txt, importance, isDone } = todoToEdit
-
+    
     return (
         <section className="todo-edit">
             {
@@ -71,7 +73,7 @@ export function TodoEdit() {
                 <input onChange={handleChange} value={importance} type="number" name="importance" id="importance" />
 
                 <label htmlFor="isDone">isDone:</label>
-                <input onChange={handleChange} value={isDone} type="checkbox" name="isDone" id="isDone" />
+                <input onChange={handleChange} value={isDone} checked={isDone} type="checkbox" name="isDone" id="isDone" />
 
 
                 <button>Save</button>
