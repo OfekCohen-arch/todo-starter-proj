@@ -33,3 +33,10 @@ export function logout() {
             throw err
         })
 }
+export function addBalance(){
+    return userService.updateBalance(10)
+    .then((balance)=>{
+     const userToSave = {...userService.getLoggedinUser(),balance:balance}
+     store.dispatch({type: SET_USER, loggedinUser: userToSave})
+    })
+}

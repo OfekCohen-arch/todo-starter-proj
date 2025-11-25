@@ -8,7 +8,8 @@ export const userService = {
     signup,
     getById,
     query,
-    getEmptyCredentials
+    getEmptyCredentials,
+    updateBalance
 }
 const STORAGE_KEY_LOGGEDIN = 'user'
 const STORAGE_KEY = 'userDB'
@@ -61,7 +62,18 @@ function getEmptyCredentials() {
         password: 'muki1',
     }
 }
-
+function updateBalance(diff) {
+    const loggedInUserId = getLoggedinUser()._id
+    return userService.getById(loggedInUserId)
+        .then(user => {
+            user.balance += diff
+            return storageService.put(STORAGE_KEY, user)
+        })
+        .then(user => {
+            _setLoggedinUser(user)
+            return user.balance
+        })
+}
 // signup({username: 'muki', password: 'muki1', fullname: 'Muki Ja'})
 // login({username: 'muki', password: 'muki1'})
 
