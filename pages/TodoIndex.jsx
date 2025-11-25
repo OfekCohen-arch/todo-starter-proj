@@ -2,7 +2,7 @@ import { TodoFilter } from "../cmps/TodoFilter.jsx"
 import { TodoList } from "../cmps/TodoList.jsx"
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
-import { loadTodos, removeTodo, saveTodo } from '../store/todo.actions.js'
+import { loadTodos, removeTodo, saveTodo,setFilterBy } from '../store/todo.actions.js'
 
 const { useState, useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
@@ -10,7 +10,6 @@ const { Link, useSearchParams } = ReactRouterDOM
 
 export function TodoIndex() {
 
-    // const [todos, setTodos] = useState(null)
     const todos = useSelector((state) => state.todos)
     const isLoading = useSelector((state) => state.isLoading)
 
@@ -21,7 +20,7 @@ export function TodoIndex() {
 
     const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
 
-    const [filterBy, setFilterBy] = useState(defaultFilter)
+    const filterBy = useSelector((state)=>state.filterBy)
 
     useEffect(() => {
         setSearchParams(filterBy)

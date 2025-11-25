@@ -1,9 +1,10 @@
 const { useState, useEffect } = React
+const {useSelector,useDispatch} = ReactRedux
 
 export function TodoFilter({ filterBy, onSetFilterBy }) {
 
     const [filterByToEdit, setFilterByToEdit] = useState({...filterBy})
-
+    
     useEffect(() => {
         // Notify parent
         onSetFilterBy(filterByToEdit)
@@ -47,7 +48,11 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
                 <input value={importance} onChange={handleChange}
                     type="number" placeholder="By Importance" id="importance" name="importance"
                 />
-
+                <select name="isDone" onChange={handleChange}>
+                <option value={''}>All</option>
+                <option value={false}>Active</option>
+                <option value={true}>Done</option>
+                </select>
                 <button hidden>Set Filter</button>
             </form>
         </section>

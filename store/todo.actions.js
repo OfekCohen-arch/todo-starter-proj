@@ -1,6 +1,6 @@
 import { todoService } from "../services/todo.service.js";
 import { userService } from "../services/user.service.js";
-import { GET_TODO,ADD_TODO, REMOVE_TODO, SET_TODOS, SET_IS_LOADING, store, UPDATE_TODO } from "./store.js"
+import { GET_TODO,ADD_TODO, REMOVE_TODO, SET_TODOS, SET_IS_LOADING, store, UPDATE_TODO,SET_FILTER_BY } from "./store.js"
 
 export function loadTodos(filterBy) {
 
@@ -53,4 +53,8 @@ export function saveTodo(todoToSave) {
             console.log('Cannot remove todo', err)
             throw err
         })
+}
+export function setFilterBy(filterByToSave){
+const type = SET_FILTER_BY
+store.dispatch({type,filterBy: filterByToSave})
 }
