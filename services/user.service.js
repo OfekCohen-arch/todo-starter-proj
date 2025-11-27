@@ -9,7 +9,9 @@ export const userService = {
     getById,
     query,
     getEmptyCredentials,
-    updateBalance
+    updateBalance,
+    updateUser,
+    getDefaultPrefs,
 }
 const STORAGE_KEY_LOGGEDIN = 'user'
 const STORAGE_KEY = 'userDB'
@@ -32,7 +34,7 @@ function login({ username, password }) {
 }
 
 function signup({ username, password, fullname }) {
-    const user = { username, password, fullname }
+    const user = { username, password, fullname, pref: getDefaultPrefs() }
     user.createdAt = user.updatedAt = Date.now()
     user.balance = 0
     user.activities = []
@@ -50,7 +52,7 @@ function getLoggedinUser() {
 }
 
 function _setLoggedinUser(user) {
-    const userToSave = { _id: user._id, fullname: user.fullname, balance: user.balance }
+    const userToSave = { _id: user._id, fullname: user.fullname, balance: user.balance, pref: user.pref, activities: user.activities }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
 }
@@ -74,6 +76,26 @@ function updateBalance(diff) {
             return user.balance
         })
 }
+function updateUser(userToUpdate){
+const loggedinUser = getLoggedinUser()
+    if (!loggedinUser) return Promise.reject('No loggedin user')
+
+    const loggedinUserId = loggedinUser._id
+    return getById(loggedinUserId)
+        .then(user => {
+            user = { ...user, ...userToUpdate }
+
+            return storageService.put(STORAGE_KEY, user)
+                .then((savedUser) => {
+                    _setLoggedinUser(savedUser)
+                    return savedUser
+                })
+        })
+}
+function getDefaultPrefs() {
+    return { color: '#eeeeee', bgColor: "#191919", fullname: '' }
+}
+
 // signup({username: 'muki', password: 'muki1', fullname: 'Muki Ja'})
 // login({username: 'muki', password: 'muki1'})
 

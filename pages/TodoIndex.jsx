@@ -18,7 +18,7 @@ export function TodoIndex() {
     // Special hook for accessing search-params:
     const [searchParams, setSearchParams] = useSearchParams()
 
-    const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
+   // const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
 
     const filterBy = useSelector((state)=>state.filterBy)
 
@@ -79,7 +79,10 @@ export function TodoIndex() {
                     </div>
 
                     <h2>Todos List</h2>
-                    <TodoList todos={todos} onRemoveTodo={onRemoveTodo} onToggleTodo={onToggleTodo} />
+                    {todos.length>0 ?<TodoList todos={todos} onRemoveTodo={onRemoveTodo} onToggleTodo={onToggleTodo} />
+                    :
+                    'no todos to show..”, when there aren’t any todos'
+                    }
                     <hr />
             <h2>Todos Table</h2>
                 </div>

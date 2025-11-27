@@ -25,10 +25,16 @@ export function AppHeader() {
     const todos = useSelector((state)=>state.todos)
     const doneTodosNumber = todos.filter(todo=>todo.isDone).length
     const doneTodosPrecent = doneTodosNumber/todos.length * 100
+    
     return JSON.stringify(doneTodosPrecent).substring(0,4)
    }
+   function getStyleByUser() {
+        if (!loggedinUser) return {}
+        const { color, bgColor: backgroundColor } = loggedinUser.pref
+        return { color, backgroundColor }
+    }
     return (
-        <header className="app-header full main-layout">
+        <header className="app-header full main-layout" style={getStyleByUser()}>
             <section className="header-container">
                 <h1>React Todo App</h1>
                 <span>Done todos: {getDoneTodosPrecents()}%</span>
@@ -48,6 +54,7 @@ export function AppHeader() {
                 <nav className="app-nav">
                     <NavLink to="/" >Home</NavLink>
                     <NavLink to="/about" >About</NavLink>
+                    {loggedinUser && <NavLink to="/user">Profile</NavLink>}
                     <NavLink to="/todo" >Todos</NavLink>
                     <NavLink to="/dashboard" >Dashboard</NavLink>
                 </nav>

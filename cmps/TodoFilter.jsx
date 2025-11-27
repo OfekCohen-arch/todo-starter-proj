@@ -4,7 +4,6 @@ const {useSelector,useDispatch} = ReactRedux
 export function TodoFilter({ filterBy, onSetFilterBy }) {
 
     const [filterByToEdit, setFilterByToEdit] = useState({...filterBy})
-    
     useEffect(() => {
         // Notify parent
         onSetFilterBy(filterByToEdit)

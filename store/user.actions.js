@@ -40,3 +40,13 @@ export function addBalance(){
      store.dispatch({type: SET_USER, loggedinUser: userToSave})
     })
 }
+export function updateUser(userToUpdate){
+    return userService.updateUser(userToUpdate)
+    .then((updatedUser)=>{
+     store.dispatch({type: SET_USER, loggedinUser: updatedUser})  
+    })
+    .catch(err => {
+            console.error('Cannot update user:', err)
+            throw err
+        })
+}
