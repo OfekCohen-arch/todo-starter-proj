@@ -82,7 +82,7 @@ function getImportanceStats() {
     return storageService.query(TODO_KEY)
         .then(todos => {
             const todoCountByImportanceMap = _getTodoCountByImportanceMap(todos)
-            const data = Object.keys(todoCountByImportanceMap).map(speedName => ({ title: speedName, value: todoCountByImportanceMap[speedName] }))
+            const data = Object.keys(todoCountByImportanceMap).map(speedName => ({ title: speedName, value: Math.round(10*todoCountByImportanceMap[speedName]/todos.length *100)/10 }))
             return data
         })
 
